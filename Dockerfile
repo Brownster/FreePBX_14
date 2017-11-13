@@ -16,7 +16,7 @@ CMD ["/sbin/my_init"]
 # Add VOLUME to allow backup of FREEPBX
 VOLUME ["/etc/freepbx/freepbxbackup"]
 
-# Map Maria DB directory to host folder  /var/lib/mysql
+# Map Maria DB deafult install dir /var/lib/mysql r change install dir in /etc/mysql/my.cnf 
 
 # Map apache conf dir /etc/php5/apache2/php.ini
 

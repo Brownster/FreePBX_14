@@ -17,8 +17,7 @@ CMD ["/sbin/my_init"]
 VOLUME ["/etc/freepbx/freepbxbackup"]
 
 # Map Maria DB deafult install dir /var/lib/mysql r change install dir in /etc/mysql/my.cnf 
-
-# Map apache conf dir /etc/php5/apache2/php.ini
+# map asteris conf files deafult location /etc/asterisk
 
 # open up ports needed by freepbx and asterisk 5060 tcp sip reg 80 tcp web port 10000-20000 udp rtp stream  
 EXPOSE 5060

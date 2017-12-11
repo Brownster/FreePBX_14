@@ -68,7 +68,8 @@ RUN git clone https://github.com/asterisk/pjproject.git 1>/dev/null \
   
 # Download asterisk.
 # Currently Certified Asterisk 13.1.
-  && curl -sf -o /tmp/asterisk.tar.gz -L http://downloads.asterisk.org/pub/telephony/certified-asterisk/certified-asterisk-13.1-current.tar.gz 1>/dev/null \
+  && curl -sf -o /tmp/asterisk.tar.gz -L http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-14-current.tar.gz 1>/dev/null \
+
 
 # gunzip asterisk
   && mkdir /tmp/asterisk \

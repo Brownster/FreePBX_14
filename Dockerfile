@@ -14,7 +14,7 @@ ENV AUTOBUILD_UNIXTIME 1418234402
 CMD ["/sbin/my_init"]
 
 # Add VOLUME to allow backup of FREEPBX
-VOLUME ["/etc/freepbx/freepbxbackup"]
+VOLUME ["/freepbxbackup"]
 
 # Map Maria DB deafult install dir /var/lib/mysql r change install dir in /etc/mysql/my.cnf 
 # map asteris conf files deafult location /etc/asterisk
@@ -67,7 +67,7 @@ RUN git clone https://github.com/asterisk/pjproject.git 1>/dev/null \
   && make install 1>/dev/null \
   
 # Download asterisk.
-# Currently Certified Asterisk 13.1.
+# Currently Certified Asterisk 14 current
   && curl -sf -o /tmp/asterisk.tar.gz -L http://downloads.asterisk.org/pub/telephony/asterisk/asterisk-14-current.tar.gz 1>/dev/null \
 
 
@@ -77,7 +77,7 @@ RUN git clone https://github.com/asterisk/pjproject.git 1>/dev/null \
 WORKDIR /tmp/asterisk
 
 # make asterisk.
-# ENV rebuild_date 2015-01-29
+# ENV rebuild_date 2017-12-29
 RUN mkdir /etc/asterisk \
 # Configure
   && ./configure --with-ssl=/opt/local --with-crypto=/opt/local 1> /dev/null \
@@ -143,6 +143,21 @@ RUN wget http://mirror.freepbx.org/freepbx-$FREEPBXVER.tgz 1>/dev/null 2>/dev/nu
   && amportal reload \
   && asterisk -rx "core restart now" \
   && chown -R $ASTERISKUSER. /var/lib/asterisk/bin/retrieve_conf \
+  
+  ## Setup for Data Persistence
+  && mkdir -p /assets/config/var/lib/ /assets/config/home \
+  && mv /home/asterisk /assets/config/home \
+  && ln -s /data/home/asterisk /home/asterisk \
+  && mv /var/lib/asterisk /assets/config/var/lib \
+  && ln -s /data/var/lib/asterisk /var/lib/asterisk \
+  && mkdir -p /assets/config/var/run \
+  && mv /var/run/asterisk /assets/config/var/run \
+  && mv /var/lib/mysql /assets/config/var/lib \
+  && ln -s /data/var/run/asterisk /var/run/asterisk \
+  && rm -rf /var/spool/asterisk \
+  && ln -s /data/var/spool/asterisk /var/spool/asterisk \
+  && rm -rf /etc/asterisk \
+  && ln -s /data/etc/asterisk /etc/asterisk
 
 #clean up
   && find /temp -mindepth 1 -delete \
